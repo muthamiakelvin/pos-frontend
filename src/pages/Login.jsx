@@ -76,7 +76,7 @@ export default function Login() {
         {/* Title */}
         <div style={{ marginBottom: 18 }}>
           <h2 style={{ margin: 0, fontSize: 22, fontWeight: 900 }}>
-            URBAN TRENDS
+            Accessory Shoppe
           </h2>
           <p style={{ margin: "6px 0 0", color: "#6b7280" }}>
             Login to access your POS dashboard

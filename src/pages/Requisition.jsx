@@ -61,17 +61,21 @@ export default function Requisition() {
     <div className="requisition-page">
       <style>{`
         .requisition-page {
-          padding: 22px;
+          padding: 22px 18px;
           max-width: 920px;
+          width: 100%;
           margin: 0 auto;
+          box-sizing: border-box;
         }
 
         .requisition-card {
+          width: 100%;
           background: #ffffff;
           border: 1px solid #e5e7eb;
           border-radius: 18px;
           padding: 32px;
           box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+          box-sizing: border-box;
         }
 
         .requisition-header {
@@ -119,11 +123,12 @@ export default function Requisition() {
 
         .full-width-button {
           width: auto;
+          min-width: 160px;
         }
 
         @media (max-width: 768px) {
           .requisition-page {
-            padding: 16px;
+            padding: 14px;
           }
 
           .requisition-card {
@@ -153,6 +158,7 @@ export default function Requisition() {
 
           .full-width-button {
             width: 100%;
+            min-width: unset;
           }
         }
       `}</style>
