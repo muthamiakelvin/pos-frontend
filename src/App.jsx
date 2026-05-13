@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import AppLayout from "./layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
@@ -18,25 +18,22 @@ import Expenses from "./pages/Expense";
 import StaffDetails from "./pages/StaffDetails";
 import CRM from "./pages/crm";
 
-// Helper function to validate token presence and basic integrity
-const isAuthenticated = () => {
-  const token = localStorage.getItem("accessToken");
-  return token && token !== "undefined" && token !== "null";
-};
-
+/* Protect private routes */
 function PrivateRoute({ children }) {
-  const location = useLocation();
+  const token = localStorage.getItem("accessToken");
 
-  if (!isAuthenticated()) {
-    // Redirect to login and save the attempted location
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
 
   return children;
 }
 
+/* Prevent logged-in users from seeing login */
 function PublicRoute({ children }) {
-  if (isAuthenticated()) {
+  const token = localStorage.getItem("accessToken");
+
+  if (token) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -44,15 +41,23 @@ function PublicRoute({ children }) {
 }
 
 export default function App() {
+
+  const token = localStorage.getItem("accessToken");
+
   return (
     <Routes>
-      {/* 1. Root Redirect Logic: 
-          Instead of a static check, we redirect to /dashboard 
-          and let the PrivateRoute handle the logic. 
-      */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-      {/* 2. Public Routes */}
+      {/* Root route decides where to go */}
+      <Route
+        path="/"
+        element={
+          token
+            ? <Navigate to="/dashboard" replace />
+            : <Navigate to="/login" replace />
+        }
+      />
+
+      {/* Public */}
       <Route
         path="/login"
         element={
@@ -70,7 +75,7 @@ export default function App() {
         }
       />
 
-      {/* 3. Protected Routes (Wrapped in Layout) */}
+      {/* Protected */}
       <Route
         element={
           <PrivateRoute>
@@ -94,8 +99,9 @@ export default function App() {
         <Route path="/staff-logs" element={<StaffLogs />} />
       </Route>
 
-      {/* 4. Catch-all */}
+      {/* Catch everything */}
       <Route path="*" element={<Navigate to="/" replace />} />
+
     </Routes>
   );
 }
